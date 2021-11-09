@@ -1,11 +1,25 @@
 import React from 'react';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import chair from '../../../images/chair.png';
+import Calendar from '../../Shared/Calendar/Calendar';
 
-const AppointmentHeader = () => {
+const AppointmentHeader = ({ date, setDate }) => {
     return (
-        <div>
-            <h>AppointmentHeader</h>
+        <Box sx={{ flexGrow: 1 }}>
+            <Grid container spacing={2}>
+                <Grid item xs={12} md={6}>
+                    <Calendar date={date} setDate={setDate}></Calendar>
 
-        </div>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <img
+                        style={{ width: '500px' }}
+                        src={chair} alt=""></img>
+
+                </Grid>
+            </Grid>
+        </Box>
     );
 };
 
