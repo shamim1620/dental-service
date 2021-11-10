@@ -1,12 +1,18 @@
 
 import React, { useState } from 'react';
-import { Button, Container, Grid, TextField, Typography } from '@mui/material';
+import { Alert, Button, CircularProgress, Container, Grid, TextField, Typography } from '@mui/material';
 import login from '../../../../images/login.png';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation, useHistory } from 'react-router-dom';
+import useAuth from '../../../../Hooks/useAuth';
 
 
 const Login = () => {
     const [loginData, setLoginData] = useState({})
+    const { user, loginUser, authError, isLoading } = useAuth();
+
+    const location = useLocation();
+    const history = useHistory();
+
     const handleOnChange = e => {
         const field = e.target.name;
         const value = e.target.value;
@@ -17,7 +23,7 @@ const Login = () => {
     }
 
     const handleLoginSubmit = e => {
-
+        loginUser(loginData.email, loginData.password, location, history);
         e.preventDefault();
     }
     return (
@@ -26,7 +32,7 @@ const Login = () => {
                 <Grid item sx={{ mt: 8 }} xs={6} md={6}>
                     <Typography variant="body1" gutterBottom>
                         Login
-                        <form onSubmit={handleLoginSubmit}>
+                        {!isLoading && <form onSubmit={handleLoginSubmit}>
                             <TextField
                                 sx={{ width: '75%', m: 1 }}
                                 id="standard-basic"
@@ -48,7 +54,17 @@ const Login = () => {
                             <NavLink to='/register' style={{ textDecoration: 'none' }}>
                                 <Button variant="text" >New User? Please Register</Button>
                             </NavLink>
-                        </form>
+                        </form>}
+                        {
+                            isLoading && <CircularProgress />
+                        }
+                        {
+                            user?.email && <Alert severity="success">Login successfully </Alert>
+                        }
+                        {
+                            authError && <Alert severity="error">{authError}</Alert>
+                        }
+
                     </Typography>
                 </Grid>
                 <Grid item xs={6} md={6}>

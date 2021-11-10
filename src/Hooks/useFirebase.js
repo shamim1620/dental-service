@@ -7,23 +7,21 @@ initializeFirebase();
 
 const useFirebase = () => {
     const [user, setUser] = useState({});
-    const [isLoding, setIsLoding] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
+    const [authError, setAuthError] = useState('');
     const auth = getAuth();
 
     const registerUser = (email, password) => {
-        setIsLoding(true);
+        setIsLoading(true);
         createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
-                // Signed in 
-                const user = userCredential.user;
-                // ...
+                setAuthError('');
             })
             .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // ..
+                setAuthError(error.message);
+
             })
-            .finally(() => setIsLoding(false));
+            .finally(() => setIsLoading(false));
     }
     //obsarve user state
     useEffect(() => {
@@ -33,43 +31,43 @@ const useFirebase = () => {
             } else {
                 setUser({});
             }
-            setIsLoding(false);
+            setIsLoading(false);
         });
         return () => unsubscribe;
     }, [])
 
-    const loginUser = () => {
-        setIsLoding(true);
+    const loginUser = (email, password, location, history) => {
+        setIsLoading(true);
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
-                // Signed in 
-                const user = userCredential.user;
-                // ...
+                const destination = location?.state?.from || '/';
+                history.replace(destination);
+                setAuthError('');
             })
             .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
+                setAuthError(error.message);
             })
-            .finally(() => setIsLoding(false));
+            .finally(() => setIsLoading(false));
     }
 
     const logout = () => {
-        setIsLoding(true);
+        setIsLoading(true);
         signOut(auth).then(() => {
             // Sign-out successful.
         }).catch((error) => {
             // An error happened.
         })
-            .finally(() => setIsLoding(false));
+            .finally(() => setIsLoading(false));
 
     }
 
     return {
         user,
-        isLoding,
+        isLoading,
         registerUser,
         loginUser,
         logout,
+        authError,
     }
 
 }
