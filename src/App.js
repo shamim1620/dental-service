@@ -11,6 +11,7 @@ import Login from './Pages/Home/Login/Login/Login';
 import Register from './Pages/Home/Login/Registar/Register';
 import AuthProvider from './context/AuthProvider/AuthProvider';
 import PrivateRoute from './Pages/Home/Login/PrivateRoute/PrivateRoute';
+import Dashboard from './Pages/Dashboard/Dashboard/Dashboard';
 
 
 function App() {
@@ -27,6 +28,9 @@ function App() {
             </Route>
             <PrivateRoute path="/appointment">
               <Appointment></Appointment>
+            </PrivateRoute>
+            <PrivateRoute path="/dashboard">
+              <Dashboard></Dashboard>
             </PrivateRoute>
             <Route path="/login">
               <Login></Login>

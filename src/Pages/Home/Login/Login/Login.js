@@ -8,7 +8,7 @@ import useAuth from '../../../../Hooks/useAuth';
 
 const Login = () => {
     const [loginData, setLoginData] = useState({})
-    const { user, loginUser, authError, isLoading } = useAuth();
+    const { user, loginUser, signInWithGoogle, authError, isLoading } = useAuth();
 
     const location = useLocation();
     const history = useHistory();
@@ -25,6 +25,10 @@ const Login = () => {
     const handleLoginSubmit = e => {
         loginUser(loginData.email, loginData.password, location, history);
         e.preventDefault();
+    }
+
+    const haldleGoogleSignIn = () => {
+        signInWithGoogle(location, history);
     }
     return (
         <Container>
@@ -54,16 +58,18 @@ const Login = () => {
                             <NavLink to='/register' style={{ textDecoration: 'none' }}>
                                 <Button variant="text" >New User? Please Register</Button>
                             </NavLink>
+                            {
+                                isLoading && <CircularProgress />
+                            }
+                            {
+                                user?.email && <Alert severity="success">Login successfully </Alert>
+                            }
+                            {
+                                authError && <Alert severity="error">{authError}</Alert>
+                            }
                         </form>}
-                        {
-                            isLoading && <CircularProgress />
-                        }
-                        {
-                            user?.email && <Alert severity="success">Login successfully </Alert>
-                        }
-                        {
-                            authError && <Alert severity="error">{authError}</Alert>
-                        }
+                        <p>--------------------------</p>
+                        <Button onClick={haldleGoogleSignIn} variant="contained">Google SignIn</Button>
 
                     </Typography>
                 </Grid>
