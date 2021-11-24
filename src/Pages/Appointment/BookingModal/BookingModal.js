@@ -42,7 +42,7 @@ const BookingModal = ({ openBooking, handleCloseBooking, slot, date, setBookingS
             date: date.toLocaleDateString()
         }
 
-        fetch('http://localhost:5000/appointments', {
+        fetch('https://quiet-badlands-51656.herokuapp.com/appointments', {
             method: 'POST',
             headers: {
                 'content-type': 'application/json'
