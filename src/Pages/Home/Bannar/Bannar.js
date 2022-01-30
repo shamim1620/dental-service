@@ -4,6 +4,8 @@ import Grid from '@mui/material/Grid';
 import { Button, Typography } from '@mui/material';
 import chair from '../../../images/chair.png';
 import bg from '../../../images/bg.png';
+import { useHistory } from 'react-router-dom';
+import useAuth from '../../../Hooks/useAuth';
 
 
 const bannarBg = {
@@ -17,6 +19,16 @@ const verticalCenter = {
 }
 
 const Bannar = () => {
+    const { user } = useAuth();
+    const history = useHistory();
+    const handleOnClick = () => {
+        if (user.email) {
+            history.push('/appointment')
+        }
+        else {
+            history.push('/login')
+        }
+    }
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -37,7 +49,7 @@ const Bannar = () => {
                         <Typography variant='h6' sx={{ mb: 3 }} style={{ color: 'gray', fontSize: 14, fontWeight: 300 }}>
                             Why do many patients prefer scheduling appointments online? The process is often faster and it can be done during or outside of normal business hours, on a computer or mobile device.
                         </Typography>
-                        <Button variant="contained" style={{ backgroundColor: '#478f7e', color: 'white' }}> Get Appointment</Button>
+                        <Button variant="contained" onClick={handleOnClick} style={{ backgroundColor: '#478f7e', color: 'white' }}> Get Appointment</Button>
                     </Box>
 
                 </Grid>
